@@ -1,6 +1,24 @@
 <script>
 export default {
-    name: 'AppHeader'
+    name: 'AppHeader',
+    data() {
+        return {
+            menuLinks: [
+                {
+                    text: 'Home',
+                    rootName: 'home'
+                },
+                {
+                    text: 'About',
+                    rootName: 'about'
+                },
+                {
+                    text: 'Projects',
+                    rootName: 'projects'
+                },
+            ]
+        };
+    }
 }
 </script>
 
@@ -14,16 +32,8 @@ export default {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <router-link class="nav-link" aria-current="page" :to="{name: 'home'}">Home</router-link>
-                        </li>
-
-                        <li class="nav-item">
-                            <router-link class="nav-link" aria-current="page" :to="{name: 'about'}">About</router-link>
-                        </li>
-
-                        <li class="nav-item">
-                            <router-link class="nav-link" aria-current="page" :to="{name: 'projects'}">Projects</router-link>
+                        <li v-for="link in menuLinks" class="nav-item">
+                            <router-link class="nav-link" aria-current="page" :to="{name: link.rootName}">{{ link.text }}</router-link>
                         </li>
                     </ul>
                 </div>
