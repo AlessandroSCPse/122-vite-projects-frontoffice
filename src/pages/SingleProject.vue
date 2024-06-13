@@ -1,16 +1,18 @@
 <script>
 import axios from 'axios';
+import { store } from '../store.js';
 
 export default {
     name: 'SingleProject',
     data() {
         return {
+            store,
             project: null
         };
     },
     methods: {
         getProjectDetails() {
-            axios.get(`http://127.0.0.1:8000/api/projects/${this.$route.params.slug}`)
+            axios.get(`${this.store.backendUrl}/api/projects/${this.$route.params.slug}`)
             .then((response) => {
                 if(response.data.success) {
                     this.project = response.data.project;
@@ -43,7 +45,7 @@ export default {
             </div>
 
             <div v-if="project.cover_image">
-                <img :src="`http://127.0.0.1:8000/storage/${project.cover_image}`" :alt="project.name">
+                <img :src="`${this.store.backendUrl}/storage/${project.cover_image}`" :alt="project.name">
             </div>
 
             <p class="mt-5" v-if="project.summary">{{ project.summary }}</p>
