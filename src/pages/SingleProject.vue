@@ -1,17 +1,24 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'SingleProject',
+    components: {
+        Loader
+    },
     data() {
         return {
             store,
-            project: null
+            project: null,
+            isLoading: false
         };
     },
     methods: {
         getProjectDetails() {
+            this.isLoading = true;
+
             axios.get(`${this.store.backendUrl}/api/projects/${this.$route.params.slug}`)
             .then((response) => {
                 if(response.data.success) {
@@ -19,6 +26,8 @@ export default {
                 } else {
                     this.$router.push({name: 'not-found'});
                 }
+
+                this.isLoading = false;
             });
         }
     },
@@ -30,7 +39,7 @@ export default {
 
 <template>
     <div class="container">
-        <div v-if="project">
+        <div v-if="project && !isLoading">
             <h1>{{ project.name }}</h1>
             <div v-if="project.client_name"><strong>Client name</strong>: {{ project.client_name }}</div>
             <div v-if="project.type">
@@ -49,6 +58,9 @@ export default {
             </div>
 
             <p class="mt-5" v-if="project.summary">{{ project.summary }}</p>
+        </div>
+        <div v-else>
+            <Loader></Loader>
         </div>
     </div>
 </template>
